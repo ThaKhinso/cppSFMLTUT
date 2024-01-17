@@ -1,5 +1,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
+
+#ifdef __WIN_64
+#endif
+
+
 int main()
 {
     // create the window
@@ -12,7 +17,15 @@ int main()
 
     sf::CircleShape shape(50.f);
     sf::Texture text;
+
+    #ifdef __linux
+    text.loadFromFile("bin/OIP.jpg");
+    #endif
+
+    #ifdef __WINDOW__
     text.loadFromFile("OIP.jpg");
+    #endif
+    
     //shape.setFillColor(sf::Color(150, 50, 250));
     text.setSmooth(true);
     shape.setTexture(&text);
