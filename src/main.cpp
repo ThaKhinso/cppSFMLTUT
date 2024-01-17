@@ -1,10 +1,27 @@
 #include <SFML/Graphics.hpp>
-
+#include <iostream>
 int main()
 {
     // create the window
     sf::RenderWindow window(sf::VideoMode(800, 600), "My window");
+    sf::Clock clock;
 
+    sf::Time elapsed1 = clock.getElapsedTime();
+    std::cout << elapsed1.asSeconds() << std::endl;
+    clock.restart();
+
+    sf::CircleShape shape(50.f);
+    sf::Texture text;
+    text.loadFromFile("OIP.jpg");
+    //shape.setFillColor(sf::Color(150, 50, 250));
+    text.setSmooth(true);
+    shape.setTexture(&text);
+    
+
+    // set a 10-pixel wide orange outline
+    /*shape.setOutlineThickness(10.f);
+    shape.setOutlineColor(sf::Color(250, 150, 100));*/
+    shape.setPosition(sf::Vector2f(400, 200));
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -18,9 +35,12 @@ int main()
         }
 
         // clear the window with black color
-        window.clear(sf::Color::Black);
-
+        window.clear(sf::Color::Blue);
+        window.draw(shape);
         // draw everything here...
+        //sf::Time elapsed2 = clock.getElapsedTime();/*
+        //std::cout << elapsed2.asSeconds() << std::endl;*/
+
         // window.draw(...);
 
         // end the current frame
