@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 
-c
 
 int main() {
     std::vector<int>crap;
