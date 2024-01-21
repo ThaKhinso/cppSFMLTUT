@@ -1,15 +1,22 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
+#include <memory>
 #include <vector>
 const int width = 800;
 const int height = 600;
 
-std::vector<sf::CircleShape>circlecontainer;
+
 
 struct windowinfo {
     int width;
     int height;
+};
+
+struct font {
+    std::string filelocation;
+    int size;
+    int red, green, blue;
 };
 
 struct Circle {
@@ -32,10 +39,17 @@ struct Rectangle {
     int Width, Height;
 };
 
+std::vector<font>fonts;
+std::vector<Circle>circles;
+std::vector<Rectangle>rectangles;
+
 void fileread(std::string& filename) {
     std::ifstream file(filename);
     std::string temp;
     windowinfo window;
+    font tempFont;
+    Circle tempCircle;
+    Rectangle tempRectangle;
     while (file >> temp)
     {
         if (temp == "Window")
@@ -43,9 +57,28 @@ void fileread(std::string& filename) {
             file >> window.width;
             file >> window.height;
         }
+        else if (temp == "Font") {
+            file >> tempFont.filelocation;
+            file >> tempFont.size;
+            file >> tempFont.red;
+            file >> tempFont.blue;
+            file >> tempFont.green;
+            fonts.push_back(tempFont);
+        }
         else if (temp == "Circle")
-        {
+        {   
+            file >> tempCircle.name;
+            file >> tempCircle.firstPosX;
+            file >> tempCircle.firstPosY;
+            file >> tempCircle.initialSpeedX;
+            file >> tempCircle.initialSpeedY;
+            file >> tempCircle.red >> tempCircle.green >> tempCircle.blue ;
 
+            circles.push_back(tempCircle);
+        } else if (temp == "Rectangle") {
+            file >> tempRectangle.name >> tempRectangle.firstPosX >> tempRectangle.firstPosY >> tempRectangle.initialSpeedX >> tempRectangle.initialSpeedY >> tempRectangle.red >> tempRectangle.green >> tempRectangle.blue >> tempRectangle.Width >> tempRectangle.Height;
+
+            rectangles.push_back(tempRectangle);
         }
     }
 }
@@ -55,12 +88,7 @@ int main()
 {
     // create the window
     sf::RenderWindow window(sf::VideoMode(width, height), "My window is that time i got reincarneated as a slime");
-    window.getSettings();
-    sf::Clock clock;
-
-    sf::Time elapsed1 = clock.getElapsedTime();
-    std::cout << elapsed1.asSeconds() << std::endl;
-    clock.restart();
+    
 
     sf::CircleShape shape(50.f);
     sf::Texture text;
