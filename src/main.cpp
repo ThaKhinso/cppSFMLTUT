@@ -55,6 +55,7 @@ int main()
 {
     // create the window
     sf::RenderWindow window(sf::VideoMode(width, height), "My window is that time i got reincarneated as a slime");
+    window.getSettings();
     sf::Clock clock;
 
     sf::Time elapsed1 = clock.getElapsedTime();
