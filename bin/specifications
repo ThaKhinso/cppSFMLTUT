@@ -1,0 +1,14 @@
+Window W H
+- This line declares that the SFML WIndow must be constructed with with W and height H, each of which will be integers
+
+Font F S R G B
+Font file 	F
+Font Size 	S
+RGB colors
+
+Rectangle	N X Y SX SY R G B W H
+Shape Name name std::string
+Initial Position( x, y ) float
+INitial speed ( x, y ) float
+rgb R G B int
+Size W,H if circle Radius R
