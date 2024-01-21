@@ -1,8 +1,55 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-
+#include <fstream>
+#include <vector>
 const int width = 800;
 const int height = 600;
+
+std::vector<sf::CircleShape>circlecontainer;
+
+struct windowinfo {
+    int width;
+    int height;
+};
+
+struct Circle {
+    std::string name;
+    float firstPosX;
+    float firstPosY;
+    float initialSpeedX;
+    float initialSpeedY;
+    int red, green, blue;
+    int radius;
+};
+
+struct Rectangle {
+    std::string name;
+    float firstPosX;
+    float firstPosY;
+    float initialSpeedX;
+    float initialSpeedY;
+    int red, green, blue;
+    int Width, Height;
+};
+
+void fileread(std::string& filename) {
+    std::ifstream file(filename);
+    std::string temp;
+    windowinfo window;
+    while (file >> temp)
+    {
+        if (temp == "Window")
+        {
+            file >> window.width;
+            file >> window.height;
+        }
+        else if (temp == "Circle")
+        {
+
+        }
+    }
+}
+
 
 int main()
 {
