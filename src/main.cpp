@@ -1,4 +1,7 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/System/Vector2.hpp>
 #include <iostream>
@@ -11,11 +14,11 @@ const int height = 600;
 
 
 struct windowinfo {
-    int width;
-    int height;
+    int width = 0;
+    int height = 0;
 };
 
-windowinfo window;
+// std::unique_ptr<windowinfo>window;
 
 struct font {
     std::string filelocation;
@@ -46,28 +49,32 @@ struct Rectangle {
 std::vector<font>fonts;
 std::vector<Circle>circles;
 std::vector<Rectangle>rectangles;
+std::unique_ptr<windowinfo>window = std::make_unique<windowinfo>();
+std::unique_ptr<font> fontt = std::make_unique<font>();
 
 void fileread(std::string& filename) {
     std::ifstream file(filename);
     std::string temp;
+
     
-    font tempFont;
+    
     Circle tempCircle;
     Rectangle tempRectangle;
+    windowinfo tempWin;
     while (file >> temp)
     {
         if (temp == "Window")
         {
-            file >> window.width;
-            file >> window.height;
+            file >> window->width;
+            file >> window->height;
+            // window.push_back(tempWin);
         }
         else if (temp == "Font") {
-            file >> tempFont.filelocation;
-            file >> tempFont.size;
-            file >> tempFont.red;
-            file >> tempFont.blue;
-            file >> tempFont.green;
-            fonts.push_back(tempFont);
+            file >> fontt->filelocation;
+            file >> fontt->size;
+            file >> fontt->red;
+            file >> fontt->green;
+            file >> fontt->blue;
         }
         else if (temp == "Circle")
         {   
@@ -76,7 +83,7 @@ void fileread(std::string& filename) {
             file >> tempCircle.firstPosY;
             file >> tempCircle.initialSpeedX;
             file >> tempCircle.initialSpeedY;
-            file >> tempCircle.red >> tempCircle.green >> tempCircle.blue ;
+            file >> tempCircle.red >> tempCircle.green >> tempCircle.blue >> tempCircle.radius;
 
             circles.push_back(tempCircle);
         } else if (temp == "Rectangle") {
@@ -91,19 +98,26 @@ void fileread(std::string& filename) {
 int main()
 {
     // create the window
-    sf::RenderWindow window(sf::VideoMode(window.width,window.height), "My window is that time i got reincarneated as a slime");
+    // sf::RenderWindow ddwindow(sf::VideoMode(window[0].width,window[0].height), "My window is that time i got reincarneated as a slime");
+    
+    
+    std::string ccc = "config.txt";
+    fileread(ccc);
+    sf::RenderWindow ddwindow(sf::VideoMode(window->width,window->height), "My window is that time i got reincarneated as a slime");
+    
+    sf::Font FFont;
+    FFont.loadFromFile(fontt->filelocation);
     
 
-    sf::CircleShape shape(50.f);
-    sf::Texture text;
-    sf::Font font;
-    sf::RectangleShape rect(sf::Vector2f(800,600));
+    sf::Text text;
+    text.setFont(FFont);
+    text.setFillColor(sf::Color(fontt->red,fontt->green,fontt->blue));
+    
 
-
-    #ifdef __linux
-    text.loadFromFile("bin/OIP.jpg");
-    font.loadFromFile("bin/fonts/PoppkornRegular-MzKY.ttf");
-    #endif
+    // #ifdef __linux
+    // text.loadFromFile("bin/OIP.jpg");
+    // font.loadFromFile("bin/fonts/PoppkornRegular-MzKY.ttf");
+    // #endif
 
     #ifdef __WIN64__
     /*text.loadFromFile("OIP.jpg");
@@ -126,33 +140,51 @@ int main()
     shape.setOutlineColor(sf::Color(250, 150, 100));*/
     //shape.setPosition(sf::Vector2f(400, 200));
     // run the program as long as the window is open
-    while (window.isOpen())
+    while (ddwindow.isOpen())
     {
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
-        while (window.pollEvent(event))
+        while (ddwindow.pollEvent(event))
         {
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
-                window.close();
+                ddwindow.close();
 
             if (event.type == sf::Event::KeyPressed) {
                 std::cout << "Key pressed with code: " << event.key.code << "\n";
 
                 if (event.key.code == sf::Keyboard::Escape) {
-                    window.close();
+                    ddwindow.close();
                 }
             }
         }
 
         // clear the window with black color
-        window.clear(sf::Color::Blue);
+        ddwindow.clear(sf::Color::Black);
         for (auto& rectt : rectangles) {
             sf::RectangleShape rect(sf::Vector2f(rectt.Width, rectt.Height));
             rect.setPosition(rectt.firstPosX, rectt.firstPosY);
+            text.setString(rectt.name);
+            text.setCharacterSize(fontt->size);
+            
+            text.setPosition(rect.getLocalBounds().width/2 - (float)text.getCharacterSize()/2,rect.getLocalBounds().height/2 - text.getCharacterSize()/2);
             rect.setFillColor(sf::Color(rectt.red, rectt.green, rectt.blue));
-            window.draw(rect);
+            
+            ddwindow.draw(rect);
+            ddwindow.draw(text);
         }
+
+        // for (auto& cir : circles) {
+        //     sf::CircleShape circle(cir.radius);
+        //     circle.setPosition(cir.firstPosX, cir.firstPosY);
+        //     circle.setFillColor(sf::Color(cir.red, cir.green, cir.blue));
+        //     ddwindow.draw(circle);
+        //     // std::cout << cir.radius << "\n";
+        // }
+
+        // for (auto& reet  : rectangles) {
+        //     std::cout << reet.red << "\n";
+        // }
         // draw everything here...
         //sf::Time elapsed2 = clock.getElapsedTime();/*
         //std::cout << elapsed2.asSeconds() << std::endl;*/
@@ -161,7 +193,7 @@ int main()
 
         // end the current frame
         
-        window.display();
+        ddwindow.display();
     }
 
     return 0;

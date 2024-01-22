@@ -1,0 +1,6 @@
+#!/usr/bin/sh
+
+set -xe
+
+cd bin
+./cppSFMLTUT

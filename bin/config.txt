@@ -1,5 +1,5 @@
 Window 800 600
-Font fonts/tech.ttf 18 255 255 255
+Font fonts/PoppkornRegular-MzKY.ttf 18 255 0 0
 Circle CGreen 100 100 -0.03 0.02 0 255 0 25
 Rectangle RRed 200 200 0.1 0.15 255 0 0 50 25
 Circle CBlue 200 200 0.02 0.04 0 0 255 100
