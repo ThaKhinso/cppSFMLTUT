@@ -1,4 +1,6 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/System/Vector2.hpp>
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -92,9 +94,11 @@ int main()
     sf::RenderWindow window(sf::VideoMode(window.width,window.height), "My window is that time i got reincarneated as a slime");
     
 
-    
-    std::string ccc = "config.txt";
-    fileread(ccc);
+    sf::CircleShape shape(50.f);
+    sf::Texture text;
+    sf::Font font;
+    sf::RectangleShape rect(sf::Vector2f(800,600));
+
 
     #ifdef __linux
     text.loadFromFile("bin/OIP.jpg");
