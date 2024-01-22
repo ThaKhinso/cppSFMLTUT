@@ -13,30 +13,32 @@ struct windowinfo {
     int height;
 };
 
+windowinfo window;
+
 struct font {
     std::string filelocation;
     int size;
-    int red, green, blue;
+    int red, green, blue = 0;
 };
 
 struct Circle {
     std::string name;
-    float firstPosX;
-    float firstPosY;
-    float initialSpeedX;
-    float initialSpeedY;
-    int red, green, blue;
-    int radius;
+    float firstPosX = 0;
+    float firstPosY = 0;
+    float initialSpeedX = 0;
+    float initialSpeedY = 0;
+    int red, green, blue = 0;
+    int radius = 0;
 };
 
 struct Rectangle {
     std::string name;
-    float firstPosX;
-    float firstPosY;
-    float initialSpeedX;
-    float initialSpeedY;
-    int red, green, blue;
-    int Width, Height;
+    float firstPosX = 0;
+    float firstPosY = 0;
+    float initialSpeedX = 0;
+    float initialSpeedY = 0;
+    int red, green, blue = 0;
+    int Width, Height = 0;
 };
 
 std::vector<font>fonts;
@@ -46,7 +48,7 @@ std::vector<Rectangle>rectangles;
 void fileread(std::string& filename) {
     std::ifstream file(filename);
     std::string temp;
-    windowinfo window;
+    
     font tempFont;
     Circle tempCircle;
     Rectangle tempRectangle;
@@ -87,13 +89,12 @@ void fileread(std::string& filename) {
 int main()
 {
     // create the window
-    sf::RenderWindow window(sf::VideoMode(width, height), "My window is that time i got reincarneated as a slime");
+    sf::RenderWindow window(sf::VideoMode(window.width,window.height), "My window is that time i got reincarneated as a slime");
     
 
-    sf::CircleShape shape(50.f);
-    sf::Texture text;
-    sf::Font font;
-
+    
+    std::string ccc = "config.txt";
+    fileread(ccc);
 
     #ifdef __linux
     text.loadFromFile("bin/OIP.jpg");
@@ -101,25 +102,25 @@ int main()
     #endif
 
     #ifdef __WIN64__
-    text.loadFromFile("OIP.jpg");
+    /*text.loadFromFile("OIP.jpg");
     if (!font.loadFromFile("fonts/PoppkornRegular-MzKY.ttf")) {
         std::cerr << "font cannot load\n";
-    }
+    }*/
     #endif
 
-    sf::Text sar("Sample Text", font, 50);
-    sar.setPosition(0, height - (float)sar.getCharacterSize());
-    //sar.setPosition(0, 0);
-    
-    //shape.setFillColor(sf::Color(150, 50, 250));
-    text.setSmooth(true);
-    shape.setTexture(&text);
+    //sf::Text sar("Sample Text", font, 50);
+    //sar.setPosition(0, height - (float)sar.getCharacterSize());
+    ////sar.setPosition(0, 0);
+    //
+    ////shape.setFillColor(sf::Color(150, 50, 250));
+    //text.setSmooth(true);
+    //shape.setTexture(&text);
     
 
     // set a 10-pixel wide orange outline
     /*shape.setOutlineThickness(10.f);
     shape.setOutlineColor(sf::Color(250, 150, 100));*/
-    shape.setPosition(sf::Vector2f(400, 200));
+    //shape.setPosition(sf::Vector2f(400, 200));
     // run the program as long as the window is open
     while (window.isOpen())
     {
@@ -142,8 +143,12 @@ int main()
 
         // clear the window with black color
         window.clear(sf::Color::Blue);
-        window.draw(shape);
-        window.draw(sar);
+        for (auto& rectt : rectangles) {
+            sf::RectangleShape rect(sf::Vector2f(rectt.Width, rectt.Height));
+            rect.setPosition(rectt.firstPosX, rectt.firstPosY);
+            rect.setFillColor(sf::Color(rectt.red, rectt.green, rectt.blue));
+            window.draw(rect);
+        }
         // draw everything here...
         //sf::Time elapsed2 = clock.getElapsedTime();/*
         //std::cout << elapsed2.asSeconds() << std::endl;*/
