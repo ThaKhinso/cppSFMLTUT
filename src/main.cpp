@@ -104,7 +104,8 @@ int main()
     std::string ccc = "config.txt";
     fileread(ccc);
     sf::RenderWindow ddwindow(sf::VideoMode(window->width,window->height), "My window is that time i got reincarneated as a slime");
-    
+    ddwindow.setFramerateLimit(60);
+    /*ddwindow.setCenter*/
     sf::Font FFont;
     FFont.loadFromFile(fontt->filelocation);
     
@@ -166,8 +167,9 @@ int main()
             rect.setPosition(rectt.firstPosX, rectt.firstPosY);
             text.setString(rectt.name);
             text.setCharacterSize(fontt->size);
-            
-            text.setPosition(rect.getLocalBounds().width/2 - (float)text.getCharacterSize()/2,rect.getLocalBounds().height/2 - text.getCharacterSize()/2);
+            std::cout << text.getLocalBounds().width << "\n";
+            //text.setPosition((float)rectt.firstPosX /2 - (float)text.getCharacterSize()/2,(float)rectt.firstPosY/2 - text.getCharacterSize()/2);
+            text.setPosition(rect.getPosition().x + (rect.getLocalBounds().width /2) - text.getLocalBounds().width / 2, rect.getPosition().y + (rect.getLocalBounds().height/2) - text.getLocalBounds().height );
             rect.setFillColor(sf::Color(rectt.red, rectt.green, rectt.blue));
             
             ddwindow.draw(rect);
