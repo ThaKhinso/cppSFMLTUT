@@ -1,9 +1,4 @@
-#include <SFML/Graphics.hpp>
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/Font.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
-#include <SFML/System/Vector2.hpp>
+﻿#include <SFML/Graphics.hpp>
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -46,11 +41,11 @@ struct Rectangle {
     int Width, Height = 0;
 };
 
-std::vector<font>fonts;
+
 std::vector<Circle>circles;
 std::vector<Rectangle>rectangles;
-std::unique_ptr<windowinfo>window = std::make_unique<windowinfo>();
-std::unique_ptr<font> fontt = std::make_unique<font>();
+std::vector<windowinfo>window;
+std::vector<font>fontt;
 
 void fileread(std::string& filename) {
     std::ifstream file(filename);
@@ -61,20 +56,22 @@ void fileread(std::string& filename) {
     Circle tempCircle;
     Rectangle tempRectangle;
     windowinfo tempWin;
+    font tempfont;
     while (file >> temp)
     {
         if (temp == "Window")
         {
-            file >> window->width;
-            file >> window->height;
-            // window.push_back(tempWin);
+            file >> tempWin.width;
+            file >> tempWin.height;
+            window.push_back(tempWin);
         }
         else if (temp == "Font") {
-            file >> fontt->filelocation;
-            file >> fontt->size;
-            file >> fontt->red;
-            file >> fontt->green;
-            file >> fontt->blue;
+            file >> tempfont.filelocation;
+            file >> tempfont.size;
+            file >> tempfont.red;
+            file >> tempfont.green;
+            file >> tempfont.blue;
+            fontt.push_back(tempfont);
         }
         else if (temp == "Circle")
         {   
@@ -103,43 +100,23 @@ int main()
     
     std::string ccc = "config.txt";
     fileread(ccc);
-    sf::RenderWindow ddwindow(sf::VideoMode(window->width,window->height), "My window is that time i got reincarneated as a slime");
+    if (fontt.size() > 0)
+    {
+        std::cout << "multiple fonts loading is unsportted\n";
+    }
+    sf::RenderWindow ddwindow(sf::VideoMode(window[0].width, window[0].height), L"မောင်စိုးသီဟ");
+    ddwindow.setFramerateLimit(60);
     
     sf::Font FFont;
-    FFont.loadFromFile(fontt->filelocation);
+    FFont.loadFromFile(fontt[0].filelocation);
     
 
     sf::Text text;
     text.setFont(FFont);
-    text.setFillColor(sf::Color(fontt->red,fontt->green,fontt->blue));
+    text.setFillColor(sf::Color(fontt[0].red, fontt[0].green, fontt[0].blue));
     
 
-    // #ifdef __linux
-    // text.loadFromFile("bin/OIP.jpg");
-    // font.loadFromFile("bin/fonts/PoppkornRegular-MzKY.ttf");
-    // #endif
-
-    #ifdef __WIN64__
-    /*text.loadFromFile("OIP.jpg");
-    if (!font.loadFromFile("fonts/PoppkornRegular-MzKY.ttf")) {
-        std::cerr << "font cannot load\n";
-    }*/
-    #endif
-
-    //sf::Text sar("Sample Text", font, 50);
-    //sar.setPosition(0, height - (float)sar.getCharacterSize());
-    ////sar.setPosition(0, 0);
-    //
-    ////shape.setFillColor(sf::Color(150, 50, 250));
-    //text.setSmooth(true);
-    //shape.setTexture(&text);
     
-
-    // set a 10-pixel wide orange outline
-    /*shape.setOutlineThickness(10.f);
-    shape.setOutlineColor(sf::Color(250, 150, 100));*/
-    //shape.setPosition(sf::Vector2f(400, 200));
-    // run the program as long as the window is open
     while (ddwindow.isOpen())
     {
         // check all the window's events that were triggered since the last iteration of the loop
@@ -165,9 +142,10 @@ int main()
             sf::RectangleShape rect(sf::Vector2f(rectt.Width, rectt.Height));
             rect.setPosition(rectt.firstPosX, rectt.firstPosY);
             text.setString(rectt.name);
-            text.setCharacterSize(fontt->size);
-            
-            text.setPosition(rect.getLocalBounds().width/2 - (float)text.getCharacterSize()/2,rect.getLocalBounds().height/2 - text.getCharacterSize()/2);
+            text.setCharacterSize(fontt[0].size);
+            //std::cout << text.getLocalBounds().width << "\n";
+            //text.setPosition((float)rectt.firstPosX /2 - (float)text.getCharacterSize()/2,(float)rectt.firstPosY/2 - text.getCharacterSize()/2);
+            text.setPosition(rect.getPosition().x + (rect.getLocalBounds().width /2) - text.getLocalBounds().width / 2, rect.getPosition().y + (rect.getLocalBounds().height/2) - text.getLocalBounds().height );
             rect.setFillColor(sf::Color(rectt.red, rectt.green, rectt.blue));
             
             ddwindow.draw(rect);
