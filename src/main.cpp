@@ -143,9 +143,10 @@ int main()
             rect.setPosition(rectt.firstPosX, rectt.firstPosY);
             text.setString(rectt.name);
             text.setCharacterSize(fontt[0].size);
+            //text.setOrigin((text.getLocalBounds().width - rect.getSize().x) / 2 + text.getLocalBounds().left, (text.getLocalBounds().height - rect.getSize().y) / 2 + text.getLocalBounds().top);
             //std::cout << text.getLocalBounds().width << "\n";
             //text.setPosition((float)rectt.firstPosX /2 - (float)text.getCharacterSize()/2,(float)rectt.firstPosY/2 - text.getCharacterSize()/2);
-            text.setPosition(rect.getPosition().x + (rect.getLocalBounds().width /2) - text.getLocalBounds().width / 2, rect.getPosition().y + (rect.getLocalBounds().height/2) - text.getLocalBounds().height );
+            text.setPosition(rect.getPosition().x + (rect.getLocalBounds().width /2) - text.getLocalBounds().width / 2 - 2, rect.getPosition().y + (rect.getLocalBounds().height/2) - text.getLocalBounds().height );
             rect.setFillColor(sf::Color(rectt.red, rectt.green, rectt.blue));
             
             ddwindow.draw(rect);
