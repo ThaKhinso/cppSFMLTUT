@@ -115,7 +115,7 @@ int main()
     text.setFont(FFont);
     text.setFillColor(sf::Color(fontt[0].red, fontt[0].green, fontt[0].blue));
     
-
+    float deltatime = 15.0f;
     
     while (ddwindow.isOpen())
     {
@@ -140,7 +140,9 @@ int main()
         ddwindow.clear(sf::Color::Black);
         for (auto& rectt : rectangles) {
             sf::RectangleShape rect(sf::Vector2f(rectt.Width, rectt.Height));
-            rect.setPosition(rectt.firstPosX, rectt.firstPosY);
+            
+            rect.setPosition(rectt.firstPosX , rectt.firstPosY );
+            
             text.setString(rectt.name);
             text.setCharacterSize(fontt[0].size);
             //text.setOrigin((text.getLocalBounds().width - rect.getSize().x) / 2 + text.getLocalBounds().left, (text.getLocalBounds().height - rect.getSize().y) / 2 + text.getLocalBounds().top);
@@ -151,15 +153,36 @@ int main()
             
             ddwindow.draw(rect);
             ddwindow.draw(text);
+            rectt.firstPosX += rectt.initialSpeedX * deltatime;
+            rectt.firstPosY += rectt.initialSpeedY * deltatime;
+            if (rectt.firstPosX < 0 || rect.getLocalBounds().width + rectt.firstPosX> window[0].width) {
+                rectt.initialSpeedX *= -1.0f;
+            }
+            if (rectt.firstPosY < 0 || rect.getLocalBounds().height + rectt.firstPosY> window[0].height) {
+                rectt.initialSpeedY *= -1.0f;
+            }
         }
 
-        // for (auto& cir : circles) {
-        //     sf::CircleShape circle(cir.radius);
-        //     circle.setPosition(cir.firstPosX, cir.firstPosY);
-        //     circle.setFillColor(sf::Color(cir.red, cir.green, cir.blue));
-        //     ddwindow.draw(circle);
-        //     // std::cout << cir.radius << "\n";
-        // }
+        for (auto& cir : circles) {
+            sf::CircleShape circle(cir.radius);
+            circle.setPosition(cir.firstPosX, cir.firstPosY);
+            text.setString(cir.name);
+            text.setPosition(circle.getPosition().x + (circle.getLocalBounds().width/2) - text.getLocalBounds().width /2, circle.getPosition().y + (circle.getLocalBounds().height /2) - text.getLocalBounds().height);
+            
+            
+            circle.setFillColor(sf::Color(cir.red, cir.green, cir.blue));
+            ddwindow.draw(circle);
+            ddwindow.draw(text);
+            cir.firstPosX += cir.initialSpeedX * deltatime;
+            cir.firstPosY += cir.initialSpeedY * deltatime;
+            if (cir.firstPosX < 0 || circle.getLocalBounds().width + cir.firstPosX> window[0].width) {
+                cir.initialSpeedX *= -1.0f;
+            }
+            if (cir.firstPosY < 0 || circle.getLocalBounds().height + cir.firstPosY> window[0].height) {
+                cir.initialSpeedY *= -1.0f;
+            }
+            // std::cout << cir.radius << "\n";
+        }
 
         // for (auto& reet  : rectangles) {
         //     std::cout << reet.red << "\n";
