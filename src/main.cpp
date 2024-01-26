@@ -109,6 +109,7 @@ int main()
     
     sf::Font FFont;
     FFont.loadFromFile(fontt[0].filelocation);
+    FFont.isSmooth();
     
 
     sf::Text text;
@@ -147,7 +148,9 @@ int main()
             text.setCharacterSize(fontt[0].size);
             //std::cout << text.getLocalBounds().width << "\n";
             //text.setPosition((float)rectt.firstPosX /2 - (float)text.getCharacterSize()/2,(float)rectt.firstPosY/2 - text.getCharacterSize()/2);
-            text.setPosition(rect.getPosition().x + (rect.getLocalBounds().width /2) - text.getLocalBounds().width / 2, rect.getPosition().y + (rect.getLocalBounds().height/2) - text.getLocalBounds().height );
+            text.setOrigin(text.getLocalBounds().left + text.getLocalBounds().width / 2.0f, text.getLocalBounds().top + text.getLocalBounds().height / 2.0f);
+            //text.setPosition(rect.getPosition().x + (rect.getLocalBounds().width /2) - text.getLocalBounds().width / 2, rect.getPosition().y + (rect.getLocalBounds().height/2) - text.getLocalBounds().height );
+            text.setPosition(rect.getPosition().x + rect.getLocalBounds().width / 2.f, rect.getPosition().y + rect.getLocalBounds().height / 2.0f);
             rect.setFillColor(sf::Color(rectt.red, rectt.green, rectt.blue));
             
             ddwindow.draw(rect);
@@ -166,8 +169,9 @@ int main()
             sf::CircleShape circle(cir.radius);
             circle.setPosition(cir.firstPosX, cir.firstPosY);
             text.setString(cir.name);
-            text.setPosition(circle.getPosition().x + (circle.getLocalBounds().width/2) - text.getLocalBounds().width /2, circle.getPosition().y + (circle.getLocalBounds().height /2) - text.getLocalBounds().height);
-            
+            text.setOrigin(text.getLocalBounds().left + text.getLocalBounds().width / 2.0f, text.getLocalBounds().top + text.getLocalBounds().height / 2.0f);
+            //text.setPosition(circle.getPosition().x + (circle.getLocalBounds().width/2) - text.getLocalBounds().width /2, circle.getPosition().y + (circle.getLocalBounds().height /2) - text.getLocalBounds().height);
+            text.setPosition(circle.getPosition().x + circle.getLocalBounds().width / 2.f, circle.getPosition().y + circle.getLocalBounds().height / 2.0f);
             
             circle.setFillColor(sf::Color(cir.red, cir.green, cir.blue));
             ddwindow.draw(circle);
