@@ -1,4 +1,5 @@
 ﻿#include <SFML/Graphics.hpp>
+#include <SFML/Window/WindowStyle.hpp>
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -107,9 +108,10 @@ int main()
     sf::RenderWindow ddwindow(sf::VideoMode(window[0].width, window[0].height), L"မောင်စိုးသီဟ");
     ddwindow.setFramerateLimit(60);
     
+    
     sf::Font FFont;
     FFont.loadFromFile(fontt[0].filelocation);
-    FFont.isSmooth();
+    
     
 
     sf::Text text;
@@ -146,7 +148,7 @@ int main()
             
             text.setString(rectt.name);
             text.setCharacterSize(fontt[0].size);
-            text.setOrigin()
+            
             //std::cout << text.getLocalBounds().width << "\n";
             //text.setPosition((float)rectt.firstPosX /2 - (float)text.getCharacterSize()/2,(float)rectt.firstPosY/2 - text.getCharacterSize()/2);
             text.setOrigin(text.getLocalBounds().left + text.getLocalBounds().width / 2.0f, text.getLocalBounds().top + text.getLocalBounds().height / 2.0f);

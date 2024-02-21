@@ -11,4 +11,4 @@ Shape Name name std::string
 Initial Position( x, y ) float
 INitial speed ( x, y ) float
 rgb R G B int
-Size W,H if circle Radius R
+Size W,H if circle Radius R「」
